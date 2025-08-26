@@ -9,10 +9,11 @@
       },
       {
          "label": "Pages",
-         "action": "content:request:interaction:http://msx.benzac.de/services/input.php?input={INPUT}&type=secret|secret|en|Secret Input Example|||Click on {ico:msx-white:done} to submit secret input@http://msx.benzac.de/interaction/input.html"
+         "action": "content:request:interaction:http://msx.benzac.de/services/input.php?input={INPUT}&type=secret|search|ru @http://msx.benzac.de/interaction/input.html"
       }
    ]
 }
+
 
 
 
