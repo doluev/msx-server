@@ -7,8 +7,9 @@
       "id": "search",
       "label": "Поиск",
       "icon": "search",
-      "data": "content:request:interaction:{PREFIX}{SERVER}/msx/search?input={INPUT}|input|ru|{ico:search} {col:msx-white-soft}Поиск|||Введите запрос|Название@https://msx.benzac.de/interaction/input.html"
+      "data": "content:request:interaction:{PREFIX}{SERVER}/msx/search?input={INPUT}|input|ru|{ico:search} {col:msx-white-soft}Поиск|||Введите запрос|Название@http://msx.benzac.de/interaction/input.html"
     }
   ]
 }
+
 
