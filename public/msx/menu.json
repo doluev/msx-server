@@ -1,24 +1,11 @@
 {
-  "name": "Главное меню",
-  "version": "1.0.0",
-  "headline": "Онлайн-кинотеатр",
-  "menu": [
-      {
-         "type": "separator",
-         "label": "Pattern"
-      },
-      {
-         "label": "Pages",
-         "action": "content:request:interaction:https://msx.benzac.de/services/input.php?input={INPUT}|search|ru@https://msx.benzac.de/interaction/input.html"
-      }
-   ]
+  "type": "pages",
+  "headline": "Меню",
+  "items": [
+    {
+      "icon": "search",
+      "label": "Поиск",
+      "action": "content:request:interaction:init@https://<твоя-ссылка>.onrender.com/msx/interaction/search.html"
+    }
+  ]
 }
-
-
-
-
-
-
-
-
-
