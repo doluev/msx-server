@@ -7,21 +7,19 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const app = express();
-
-// Включаем CORS
 app.use(cors());
 
-// Раздаём статические файлы (start.json, menu.json)
+// Статика (JSON файлы) по /msx/
 app.use("/msx", express.static(path.join(__dirname, "public")));
 
-// Демоданные для поиска
+// Пример каталога
 const catalog = [
   { title: "Демо видео 1", url: "https://msx.benzac.de/media/video1.mp4", type: "video" },
   { title: "Демо видео 2", url: "https://msx.benzac.de/media/video2.mp4", type: "video" },
-  { title: "Страница проекта MSX", url: "https://msx.benzac.de/", type: "link" }
+  { title: "MSX сайт", url: "https://msx.benzac.de/", type: "link" }
 ];
 
-// Эндпоинт поиска
+// Поиск
 app.get("/msx/search", (req, res) => {
   const q = String(req.query.input ?? "").trim().toLowerCase();
   const results = q
@@ -29,30 +27,22 @@ app.get("/msx/search", (req, res) => {
     : [];
 
   res.json({
-    headline: `{ico:search} "${q || "Пустой запрос"}"`,
-    hint: results.length ? `Найдено: ${results.length}` : "Ничего не найдено",
+    headline: `{ico:search} Результаты по запросу: "${q || "..." }"`,
+    hint: results.length ? `Найдено: ${results.length}` : "Нет совпадений",
     template: {
       type: "separate",
       layout: "0,0,2,4",
       icon: "msx-white-soft:movie",
-      color: "msx-glass",
-      decompress: true
+      color: "msx-glass"
     },
     items: results.map(r => ({
       title: r.title,
-      playerLabel: r.title,
-      action:
-        r.type === "video"
-          ? `video:${r.url}`
-          : `link:${r.url}`
+      action: r.type === "video" ? `video:${r.url}` : `link:${r.url}`
     }))
   });
 });
 
-// Запуск
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {
-  console.log(`MSX server listening on http://localhost:${PORT}`);
+  console.log(`MSX server running at http://localhost:${PORT}/msx/start.json`);
 });
-
-
