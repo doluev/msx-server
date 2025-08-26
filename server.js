@@ -9,14 +9,14 @@ const __dirname = path.dirname(__filename);
 const app = express();
 app.use(cors());
 
-// Статика (JSON файлы) по /msx/
-app.use("/msx", express.static(path.join(__dirname, "public")));
+// Статика
+app.use("/msx", express.static(path.join(__dirname, "public/msx")));
+app.use(express.static(path.join(__dirname, "public")));
 
 // Пример каталога
 const catalog = [
   { title: "Демо видео 1", url: "https://msx.benzac.de/media/video1.mp4", type: "video" },
-  { title: "Демо видео 2", url: "https://msx.benzac.de/media/video2.mp4", type: "video" },
-  { title: "MSX сайт", url: "https://msx.benzac.de/", type: "link" }
+  { title: "Демо видео 2", url: "https://msx.benzac.de/media/video2.mp4", type: "video" }
 ];
 
 // Поиск
@@ -27,14 +27,9 @@ app.get("/msx/search", (req, res) => {
     : [];
 
   res.json({
-    headline: `{ico:search} Результаты по запросу: "${q || "..." }"`,
+    headline: `{ico:search} Результаты по запросу: "${q || ""}"`,
     hint: results.length ? `Найдено: ${results.length}` : "Нет совпадений",
-    template: {
-      type: "separate",
-      layout: "0,0,2,4",
-      icon: "msx-white-soft:movie",
-      color: "msx-glass"
-    },
+    template: { type: "separate", layout: "0,0,2,4", icon: "msx-white-soft:movie", color: "msx-glass" },
     items: results.map(r => ({
       title: r.title,
       action: r.type === "video" ? `video:${r.url}` : `link:${r.url}`
@@ -43,6 +38,4 @@ app.get("/msx/search", (req, res) => {
 });
 
 const PORT = process.env.PORT || 8080;
-app.listen(PORT, () => {
-  console.log(`MSX server running at http://localhost:${PORT}/msx/start.json`);
-});
+app.listen(PORT, () => console.log(`MSX server running at http://localhost:${PORT}/msx/start.json`));
