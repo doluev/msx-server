@@ -22,7 +22,7 @@ const catalog = [
 ];
 
 // Эндпоинт поиска
-app.get("/search", (req, res) => {
+app.get("/msx/search", (req, res) => {
   const q = String(req.query.input ?? "").trim().toLowerCase();
   const results = q
     ? catalog.filter(i => i.title.toLowerCase().includes(q))
@@ -54,4 +54,5 @@ const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {
   console.log(`MSX server listening on http://localhost:${PORT}`);
 });
+
 
