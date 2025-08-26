@@ -7,8 +7,9 @@
       "id": "search",
       "label": "Поиск фильмов",
       "icon": "search",
-      "data": "content:request:interaction:{PREFIX}{SERVER}/msx/search?input={INPUT}|search|ru|{ico:search} {col:msx-white-soft}Поиск фильмов|||Введите название фильма| data@https://msx.benzac.de/interaction/input.html"
+      "action": "content:request:interaction:http://msx.benzac.de/services/input.php?input={INPUT}&type=default|default|en|Default Input Example|||Click on {ico:msx-white:done} to submit input@http://msx.benzac.de/interaction/input.html"
     }
   ]
 }
+
 
