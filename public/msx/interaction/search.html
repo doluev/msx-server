@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>MSX Search Plugin</title>
+  <script src="//msx.benzac.de/js/tvx-plugin.min.js"></script>
+  <style>
+    body {
+      background: #000;
+      color: #fff;
+      font-family: sans-serif;
+      margin: 0;
+      padding: 20px;
+      text-align: center;
+    }
+    #inputField {
+      width: 90%;
+      padding: 10px;
+      font-size: 20px;
+      border-radius: 8px;
+      border: none;
+      margin-bottom: 20px;
+    }
+    .keyboard {
+      display: grid;
+      grid-template-columns: repeat(10, 1fr);
+      gap: 5px;
+      margin-bottom: 20px;
+    }
+    .key {
+      background: #222;
+      padding: 10px;
+      font-size: 18px;
+      border-radius: 6px;
+      cursor: pointer;
+      user-select: none;
+    }
+    .key:active {
+      background: #555;
+    }
+    #searchBtn {
+      background: #0a84ff;
+      padding: 12px 20px;
+      font-size: 20px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    #searchBtn:active {
+      background: #0066cc;
+    }
+  </style>
+</head>
+<body>
+  <h2>Поиск</h2>
+  <input id="inputField" type="text" placeholder="Введите запрос" />
+
+  <div class="keyboard" id="keyboard"></div>
+
+  <button id="searchBtn">🔍 Поиск</button>
+
+  <script>
+    function SearchHandler() {
+      this.init = function () {
+        buildKeyboard();
+      };
+      this.ready = function () {};
+    }
+
+    function buildKeyboard() {
+      const keys = "АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ".split("");
+      const kb = document.getElementById("keyboard");
+      kb.innerHTML = "";
+      keys.forEach(ch => {
+        const btn = document.createElement("div");
+        btn.className = "key";
+        btn.textContent = ch;
+        btn.onclick = () => {
+          document.getElementById("inputField").value += ch;
+        };
+        kb.appendChild(btn);
+      });
+      // спец-клавиши
+      const space = document.createElement("div");
+      space.className = "key";
+      space.style.gridColumn = "span 5";
+      space.textContent = "Пробел";
+      space.onclick = () => {
+        document.getElementById("inputField").value += " ";
+      };
+      kb.appendChild(space);
+
+      const back = document.createElement("div");
+      back.className = "key";
+      back.style.gridColumn = "span 5";
+      back.textContent = "⌫";
+      back.onclick = () => {
+        const input = document.getElementById("inputField");
+        input.value = input.value.slice(0, -1);
+      };
+      kb.appendChild(back);
+    }
+
+    document.getElementById("searchBtn").onclick = () => {
+      const query = document.getElementById("inputField").value.trim();
+      if (query) {
+        // возвращаем результат в MSX
+        TVXInteractionPlugin.sendData({ input: query });
+      }
+    };
+
+    TVXPluginTools.onReady(function () {
+      TVXInteractionPlugin.setupHandler(new SearchHandler());
+      TVXInteractionPlugin.init();
+    });
+  </script>
+</body>
+</html>
