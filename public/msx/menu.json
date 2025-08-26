@@ -3,13 +3,20 @@
   "version": "1.0.0",
   "headline": "Онлайн-кинотеатр",
   "menu": [
-    {
-      "id": "search",
-      "label": "Поиск фильмов",
-      "icon": "search",
-      "action": "content:request:interaction:http://msx.benzac.de/services/input.php?input={INPUT}&type=default|default|en|Default Input Example|||Click on {ico:msx-white:done} to submit input@http://msx.benzac.de/interaction/input.html"
-    }
-  ]
+      "items": [
+          {
+             "icon": "keyboard",
+             "label": "Default",
+             "action": "content:request:interaction:http://msx.benzac.de/services/input.php?input={INPUT}&type=default|default|en|Default Input Example|||Click on {ico:msx-white:done} to submit input@http://msx.benzac.de/interaction/input.html"
+          },
+          {
+             "icon": "password",
+             "label": "Secret",
+             "action": "content:request:interaction:http://msx.benzac.de/services/input.php?input={INPUT}&type=secret|secret|en|Secret Input Example|||Click on {ico:msx-white:done} to submit secret input@http://msx.benzac.de/interaction/input.html"
+          }
+      ]
+   ]
 }
+
 
 
