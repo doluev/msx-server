@@ -1,6 +1,11 @@
 import express from "express";
 import cors from "cors";
 import path from "path";
+import { fileURLToPath } from "url";
+
+// Получаем __dirname в ES Module
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const app = express();
 app.use(cors());
@@ -14,10 +19,11 @@ const catalog = [
   { title: "Демо видео 2", url: "https://msx.benzac.de/media/video2.mp4", type: "video" }
 ];
 
-// Поиск
+// Эндпоинт поиска
 app.get("/msx/search", (req, res) => {
   const q = String(req.query.input || "").toLowerCase();
   const results = q ? catalog.filter(f => f.title.toLowerCase().includes(q)) : [];
+
   res.json({
     type: "pages",
     headline: `Результаты поиска: "${q}"`,
@@ -31,4 +37,6 @@ app.get("/msx/search", (req, res) => {
 });
 
 const PORT = process.env.PORT || 8080;
-app.listen(PORT, () => console.log(`MSX server running at http://localhost:${PORT}/msx/start.json`));
+app.listen(PORT, () =>
+  console.log(`MSX server running at http://localhost:${PORT}/msx/start.json`)
+);
