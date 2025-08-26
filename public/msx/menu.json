@@ -1,7 +1,8 @@
 {
-  "type": "pages",
-  "headline": "Меню",
-  "items": [
+   "name": "Content Guide",
+   "version": "1.0.0",
+   "headline": "Content Guide",
+   "menu": [
     {
       "icon": "search",
       "label": "Поиск",
@@ -9,4 +10,5 @@
     }
   ]
 }
+
 
