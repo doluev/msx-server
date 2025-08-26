@@ -1,14 +1,13 @@
 {
-  "name": "Демо меню",
+  "name": "Онлайн-кинотеатр",
   "version": "1.0.0",
-  "headline": "MSX Меню",
+  "headline": "Главное меню",
   "menu": [
     {
       "id": "search",
       "label": "Поиск",
       "icon": "search",
-      "data": "content:request:interaction:{PREFIX}{SERVER}/msx/search?input={INPUT}|search|ru|{ico:search} {col:msx-white-soft}Поиск|||Введите запрос|Название@http://msx.benzac.de/interaction/input.html"
+      "data": "content:request:interaction:{PREFIX}{SERVER}/msx/search?input={INPUT}|input|ru|{ico:search} {col:msx-white-soft}Поиск|||Введите запрос|Название@{PREFIX}{SERVER}/msx/interaction/input.html"
     }
   ]
 }
-
