@@ -1,0 +1,13 @@
+{
+  "name": "Демо меню",
+  "version": "1.0.0",
+  "headline": "MSX Меню",
+  "menu": [
+    {
+      "id": "search",
+      "label": "Поиск",
+      "icon": "search",
+      "data": "content:request:interaction:{PREFIX}{SERVER}/search?input={INPUT}|search|ru|{ico:search} {col:msx-white-soft}Поиск|||Введите запрос|Название@http://msx.benzac.de/interaction/input.html"
+    }
+  ]
+}
