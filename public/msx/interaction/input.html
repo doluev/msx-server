@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>MSX Поиск</title>
+  <style>
+    body { font-family: Arial, sans-serif; background: #1c1c1c; color: #fff; margin:0; padding:20px;}
+    .search-container { max-width:600px; margin: auto; }
+    input[type=text] { width: 100%; font-size: 1.2em; padding: 10px; border-radius:5px; border:1px solid #555; margin-bottom:10px; }
+    button { padding: 10px 15px; font-size: 1em; border:none; border-radius:5px; background: #2a7ae2; color:#fff; cursor:pointer; }
+    button:hover { background: #1f5dbf; }
+    .keyboard { display: grid; grid-template-columns: repeat(10, 1fr); gap:5px; margin-top:10px; }
+    .key { padding:10px; background:#333; border-radius:4px; text-align:center; cursor:pointer; user-select:none; }
+    .key:hover { background:#555; }
+    .results { margin-top:20px; }
+    .item { padding:5px 0; border-bottom:1px solid #444; cursor:pointer; }
+    .item:hover { background:#2a2a2a; }
+  </style>
+</head>
+<body>
+  <div class="search-container">
+    <input id="searchInput" type="text" placeholder="Введите запрос" autofocus>
+    <button id="searchBtn">Поиск</button>
+    <div class="keyboard" id="keyboard"></div>
+    <div class="results" id="results"></div>
+  </div>
+
+  <script>
+    const searchInput = document.getElementById('searchInput');
+    const searchBtn = document.getElementById('searchBtn');
+    const resultsDiv = document.getElementById('results');
+    const keyboardDiv = document.getElementById('keyboard');
+
+    // Простая виртуальная клавиатура (русская и английская)
+    const keysRU = 'йцукенгшщзхъфывапролджэячсмитьбю'.split('');
+    const keysEN = 'qwertyuiopasdfghjklzxcvbnm'.split('');
+    let currentLayout = 'ru';
+
+    function renderKeyboard() {
+      keyboardDiv.innerHTML = '';
+      const keys = currentLayout==='ru'? keysRU: keysEN;
+      keys.forEach(k=>{
+        const btn = document.createElement('div');
+        btn.className='key';
+        btn.textContent = k;
+        btn.onclick = ()=>{ searchInput.value += k; };
+        keyboardDiv.appendChild(btn);
+      });
+      const switchBtn = document.createElement('div');
+      switchBtn.className='key';
+      switchBtn.textContent = currentLayout==='ru'?'EN':'RU';
+      switchBtn.style.gridColumn='span 2';
+      switchBtn.onclick = ()=>{
+        currentLayout = currentLayout==='ru'?'en':'ru';
+        renderKeyboard();
+      };
+      keyboardDiv.appendChild(switchBtn);
+      const spaceBtn = document.createElement('div');
+      spaceBtn.className='key';
+      spaceBtn.textContent='Space';
+      spaceBtn.style.gridColumn='span 4';
+      spaceBtn.onclick = ()=>{ searchInput.value += ' '; };
+      keyboardDiv.appendChild(spaceBtn);
+      const backBtn = document.createElement('div');
+      backBtn.className='key';
+      backBtn.textContent='←';
+      backBtn.style.gridColumn='span 2';
+      backBtn.onclick = ()=>{ searchInput.value = searchInput.value.slice(0,-1); };
+      keyboardDiv.appendChild(backBtn);
+    }
+
+    renderKeyboard();
+
+    async function doSearch() {
+      const query = encodeURIComponent(searchInput.value.trim());
+      if(!query) return;
+      resultsDiv.innerHTML='Загрузка...';
+      try {
+        const target = new URLSearchParams(location.search).get('target');
+        const url = `${target}?input=${query}`;
+        const resp = await fetch(url);
+        const data = await resp.json();
+        resultsDiv.innerHTML='';
+        if(data.items && data.items.length>0){
+          data.items.forEach(i=>{
+            const div = document.createElement('div');
+            div.className='item';
+            div.textContent=i.title;
+            div.onclick=()=>{ alert('Выбрано: '+i.title+'\nAction: '+i.action); };
+            resultsDiv.appendChild(div);
+          });
+        } else {
+          resultsDiv.innerHTML='Ничего не найдено';
+        }
+      } catch(e){
+        resultsDiv.innerHTML='Ошибка запроса';
+        console.error(e);
+      }
+    }
+
+    searchBtn.onclick = doSearch;
+    searchInput.addEventListener('keydown', e=>{
+      if(e.key==='Enter') doSearch();
+    });
+  </script>
+</body>
+</html>
