@@ -9,113 +9,11 @@
       },
       {
          "label": "Pages",
-         "data": "http://msx.benzac.de/info/data/guide/pages.json"
-      },
-      {
-         "label": "Panel",
-         "data": {
-            "type": "pages",
-            "pages": [
-               {
-                  "items": [
-                     {
-                        "type": "button",
-                        "layout": "0,0,3,3",
-                        "icon": "web-asset",
-                        "label": "Panel",
-                        "action": "panel:http://msx.benzac.de/info/data/guide/panel.json"
-                     }
-                  ]
-               }
-            ]
-         }
-      },
-      {
-         "label": "List",
-         "data": "http://msx.benzac.de/info/data/guide/list.json"
-      },
-      {
-         "label": "Stacked List",
-         "data": "http://msx.benzac.de/info/data/guide/stacked_list.json"
-      },
-      {
-         "label": "Template",
-         "data": "http://msx.benzac.de/info/data/guide/template.json"
-      },
-      {
-         "type": "separator",
-         "label": "Content"
-      },
-      {
-         "label": "Types",
-         "data": "http://msx.benzac.de/info/data/guide/types.json"
-      },
-      {
-         "label": "Special",
-         "data": "http://msx.benzac.de/info/data/guide/special.json"
-      },
-      {
-         "label": "Text",
-         "data": "http://msx.benzac.de/info/data/guide/text.json"
-      },
-      {
-         "label": "Text & Image",
-         "data": "http://msx.benzac.de/info/data/guide/text_image.json"
-      },
-      {
-         "label": "Image Filler",
-         "data": "http://msx.benzac.de/info/data/guide/image_filler.json"
-      },
-      {
-         "label": "Image Width",
-         "data": "http://msx.benzac.de/info/data/guide/image_width.json"
-      },
-      {
-         "label": "Image Height",
-         "data": "http://msx.benzac.de/info/data/guide/image_height.json"
-      },
-      {
-         "label": "Icons",
-         "data": "http://msx.benzac.de/info/data/guide/icons.json"
-      },
-      {
-         "label": "Icon Sizes",
-         "data": "http://msx.benzac.de/info/data/guide/icon_sizes.json"
-      },
-      {
-         "type": "separator",
-         "label": "Actions"
-      },
-      {
-         "label": "Videos",
-         "data": "http://msx.benzac.de/info/data/guide/videos.json"
-      },
-      {
-         "label": "Audios",
-         "data": "http://msx.benzac.de/info/data/guide/audios.json"
-      },
-      {
-         "label": "Images",
-         "data": "http://msx.benzac.de/info/data/guide/images.json"
-      },
-      {
-         "label": "Links",
-         "data": "http://msx.benzac.de/info/data/guide/links.json"
-      },
-      {
-         "label": "Mixed",
-         "data": "http://msx.benzac.de/info/data/guide/mixed.json"
-      },
-      {
-         "label": "References",
-         "data": "http://msx.benzac.de/info/data/guide/references.json"
-      },
-      {
-         "label": "Messages",
-         "data": "http://msx.benzac.de/info/data/guide/messages.json"
+         "action": "content:request:interaction:http://msx.benzac.de/services/input.php?input={INPUT}&type=secret|secret|en|Secret Input Example|||Click on {ico:msx-white:done} to submit secret input@http://msx.benzac.de/interaction/input.html"
       }
    ]
 }
+
 
 
 
