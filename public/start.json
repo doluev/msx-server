@@ -1,6 +1,7 @@
 {
   "name": "Мой MSX сервер",
   "version": "1.0.0",
-  "parameter": "menu:{PREFIX}{SERVER}/menu.json",
+  "parameter": "menu:{PREFIX}{SERVER}/msx/menu.json",
   "welcome": "start"
 }
+
