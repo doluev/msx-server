@@ -5,7 +5,8 @@
     {
       "icon": "search",
       "label": "Поиск",
-      "action": "content:request:interaction:init@https://<твоя-ссылка>.onrender.com/msx/interaction/search.html"
+      "action": "content:request:interaction:init@https://msx-server-1.onrender.com/msx/interaction/search.html"
     }
   ]
 }
+
