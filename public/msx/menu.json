@@ -3,9 +3,10 @@
   "menu": [
     {
          "label": "Videos",
-         "data": "http://msx.benzac.de/info/data/guide/videos.json"
+         "data": "https://msx-server-1.onrender.com/msx/videos.json"
       }
   ]
 }
+
 
 
