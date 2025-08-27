@@ -3,10 +3,11 @@
   "menu": [
     {
          "label": "Мои видео",
-         "action": "video:https://msx-server-production.up.railway.app/msx/videos.json"
+         "data": "https://msx-server-production.up.railway.app/msx/videos.json"
       }
   ]
 }
+
 
 
 
