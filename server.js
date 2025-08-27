@@ -1,9 +1,28 @@
 import { chromium } from 'playwright';
 import express from 'express';
 import cors from 'cors';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const app = express();
 app.use(cors());
+console.log(`🚀 [CORS] ${new Date().toISOString()} CORS middleware enabled`);
+
+// Статические файлы
+app.use("/msx", express.static(path.join(__dirname, "public/msx"), {
+  setHeaders: (res, path) => {
+    console.log(`📁 [STATIC] ${new Date().toISOString()} Serving file: ${path}`);
+  }
+}));
+
+// Тестовый эндпоинт для проверки сервера
+app.get("/health", (req, res) => {
+  console.log(`🩺 [HEALTH] ${new Date().toISOString()} Health check requested`);
+  res.json({ status: "ok", timestamp: new Date().toISOString() });
+});
 
 async function parsePage(url) {
   try {
@@ -61,7 +80,7 @@ async function parsePage(url) {
     });
 
     console.log(`⏳ [WAIT] ${new Date().toISOString()} Ожидаем 3s для дополнительных запросов...`);
-    await page.waitForTimeout(3000); // Увеличено для надёжности
+    await page.waitForTimeout(3000);
 
     console.log(`🔌 [PLAYWRIGHT] ${new Date().toISOString()} Закрываем браузер...`);
     await browser.close();
@@ -116,7 +135,6 @@ app.get("/msx/videos.json", async (req, res) => {
       items
     };
     console.log(`📤 [HTTP] ${new Date().toISOString()} Отправляем ответ: ${JSON.stringify(msxData, null, 2)}`);
-
     res.json(msxData);
   } catch (error) {
     console.error(`❌ [HTTP] ${new Date().toISOString()} Ошибка в /msx/videos.json: ${error.message}`);
