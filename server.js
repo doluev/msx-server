@@ -30,7 +30,10 @@ class M3U8Parser {
             console.log(`🔍 Парсим страницу динамически: ${url}`);
             const m3u8Requests = new Set();
 
-            const browser = await chromium.launch({ headless: true }); // Можно сделать false для отладки
+            const browser = await chromium.launch({
+              headless: true,
+              args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-dev-shm-usage']
+            });
             const page = await browser.newPage();
 
             // Перехват сетевых запросов
@@ -318,3 +321,4 @@ const PORT = process.env.PORT || 8080;
 app.listen(PORT, () =>
     console.log(`🚀 MSX server running at http://localhost:${PORT}/msx/start.json`)
 );
+
