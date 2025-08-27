@@ -5,6 +5,7 @@
   "main": "server.js",
   "type": "module",
   "scripts": {
+    "install-browsers": "npx playwright install --with-deps",
     "start": "node server.js",
     "dev": "nodemon server.js"
   },
@@ -32,4 +33,5 @@
   "author": "Your Name",
   "license": "MIT"
 }
+
 
