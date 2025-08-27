@@ -2,8 +2,7 @@ import express from "express";
 import cors from "cors";
 import path from "path";
 import { fileURLToPath } from "url";
-import axios from "axios";
-import * as cheerio from "cheerio";
+import { chromium } from "playwright";
 
 // Получаем __dirname в ES Module
 const __filename = fileURLToPath(import.meta.url);
@@ -18,18 +17,6 @@ app.use("/msx", express.static(path.join(__dirname, "public/msx")));
 // Класс для парсинга M3U8 ссылок
 class M3U8Parser {
     constructor() {
-        this.client = axios.create({
-            timeout: 30000,
-            headers: {
-                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36',
-                'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
-                'Accept-Language': 'en-US,en;q=0.5',
-                'Accept-Encoding': 'gzip, deflate',
-                'Connection': 'keep-alive',
-                'Upgrade-Insecure-Requests': '1'
-            }
-        });
-        
         // Кэш для результатов парсинга
         this.cache = {
             data: null,
@@ -40,69 +27,43 @@ class M3U8Parser {
 
     async parsePage(url) {
         try {
-            console.log(`🔍 Парсим страницу: ${url}`);
-            const response = await this.client.get(url);
-            const $ = cheerio.load(response.data);
-            let m3u8Links = new Set();
+            console.log(`🔍 Парсим страницу динамически: ${url}`);
+            const m3u8Requests = new Set();
 
-            // 1. Поиск в script тегах
-            $('script').each((index, element) => {
-                const scriptContent = $(element).html();
-                if (scriptContent) {
-                    const matches = scriptContent.match(/https?:\/\/[^\s"']+\.m3u8[^\s"']*/g);
-                    if (matches) {
-                        matches.forEach(match => m3u8Links.add(match));
-                    }
+            const browser = await chromium.launch({ headless: true }); // Можно сделать false для отладки
+            const page = await browser.newPage();
+
+            // Перехват сетевых запросов
+            page.on('request', (request) => {
+                const reqUrl = request.url();
+                if (reqUrl.includes('.m3u8') && /(master.*\.m3u8$|index.*\.m3u8$)/i.test(reqUrl)) {
+                    console.log(`[MOVIE] Найдено по сети: ${reqUrl}`);
+                    m3u8Requests.add(reqUrl);
                 }
             });
 
-            // 2. Поиск в data-src атрибутах
-            $('[data-src]').each((index, element) => {
-                const dataSrc = $(element).attr('data-src');
-                if (dataSrc && dataSrc.includes('.m3u8')) {
-                    const fullUrl = this.resolveUrl(dataSrc, url);
-                    if (fullUrl) m3u8Links.add(fullUrl);
-                }
+            await page.goto(url, { timeout: 60000, waitUntil: 'networkidle' });
+
+            // Проверка DOM <video src>
+            const videoSources = await page.evaluate(() => {
+                const videos = Array.from(document.querySelectorAll('video[src]'));
+                return videos
+                    .map(video => video.getAttribute('src'))
+                    .filter(src => src && src.includes('.m3u8'));
             });
 
-            // 3. Поиск в source тегах
-            $('source').each((index, element) => {
-                const src = $(element).attr('src');
-                if (src && src.includes('.m3u8')) {
-                    const fullUrl = this.resolveUrl(src, url);
-                    if (fullUrl) m3u8Links.add(fullUrl);
-                }
+            videoSources.forEach(src => {
+                console.log(`[MOVIE-DOM] Найден src в <video>: ${src}`);
+                m3u8Requests.add(src);
             });
 
-            // 4. Поиск в video тегах
-            $('video').each((index, element) => {
-                const src = $(element).attr('src');
-                if (src && src.includes('.m3u8')) {
-                    const fullUrl = this.resolveUrl(src, url);
-                    if (fullUrl) m3u8Links.add(fullUrl);
-                }
-            });
+            // Немного ждём, чтобы успели прилететь запросы
+            await page.waitForTimeout(800);
 
-            // 5. Общий поиск в HTML тексте
-            const pageText = response.data;
-            const additionalMatches = pageText.match(/https?:\/\/[^\s"'<>]+\.m3u8[^\s"'<>]*/g);
-            if (additionalMatches) {
-                additionalMatches.forEach(match => m3u8Links.add(match));
-            }
-
-            // 6. Поиск в JSON структурах
-            const jsonMatches = pageText.match(/"[^"]*\.m3u8[^"]*"/g);
-            if (jsonMatches) {
-                jsonMatches.forEach(match => {
-                    const cleanUrl = match.replace(/"/g, '').replace(/\\"/g, '"');
-                    if (this.isValidUrl(cleanUrl)) {
-                        m3u8Links.add(cleanUrl);
-                    }
-                });
-            }
+            await browser.close();
 
             // Конвертируем Set в массив и валидируем
-            const uniqueLinks = Array.from(m3u8Links);
+            const uniqueLinks = Array.from(m3u8Requests);
             const validatedLinks = uniqueLinks.filter(link => this.validateM3U8Link(link));
 
             console.log(`✅ Найдено ${validatedLinks.length} валидных m3u8 ссылок`);
@@ -111,18 +72,6 @@ class M3U8Parser {
         } catch (error) {
             console.error('❌ Ошибка парсинга:', error.message);
             return [];
-        }
-    }
-
-    resolveUrl(relativePath, baseUrl) {
-        try {
-            if (relativePath.startsWith('http')) {
-                return relativePath;
-            }
-            const resolved = new URL(relativePath, baseUrl);
-            return resolved.href;
-        } catch (error) {
-            return null;
         }
     }
 
