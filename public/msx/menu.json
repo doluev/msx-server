@@ -2,11 +2,12 @@
   "headline": "Онлайн-кинотеатр",
   "menu": [
     {
-         "label": "Videos",
-         "data": "https://https://msx-server-production.up.railway.app/msx/videos.json"
+         "label": "Мои видео",
+         "data": "https://msx-server-production.up.railway.app/msx/videos.json"
       }
   ]
 }
+
 
 
 
