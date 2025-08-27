@@ -1,7 +1,6 @@
 {
-  "type": "pages",
   "headline": "Онлайн-кинотеатр",
-  "items": [
+  "menu": [
     {
       "type": "page",
       "headline": "Фильмы",
@@ -15,3 +14,4 @@
     }
   ]
 }
+
