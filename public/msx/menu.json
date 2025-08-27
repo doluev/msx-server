@@ -2,16 +2,10 @@
   "headline": "Онлайн-кинотеатр",
   "menu": [
     {
-      "type": "page",
-      "headline": "Фильмы",
-      "items": [
-        {
-          "label": "Фильм: Большое кино",
-          "icon": "movie",
-          "action": "video:https://hid10598ton.redcdn.org/hls/mpegts/Kv7l5lK5edlT6ZlYI4Yu/858/1836763441/w-3TgUT8f2AOSMyEFIh5KA/1756377638/2025/8/qkkzDrLLFKm1Q1PQn1IZ_720.mp4/master-v1-a1.m3u8"
-        }
-      ]
-    }
+         "label": "Videos",
+         "data": "http://msx.benzac.de/info/data/guide/videos.json"
+      }
   ]
 }
+
 
