@@ -1,6 +1,6 @@
-const { chromium } = require('playwright');
-const express = require('express');
-const cors = require('cors');
+import { chromium } from 'playwright';
+import express from 'express';
+import cors from 'cors';
 
 const app = express();
 app.use(cors());
@@ -61,7 +61,7 @@ async function parsePage(url) {
     });
 
     console.log(`⏳ [WAIT] ${new Date().toISOString()} Ожидаем 3s для дополнительных запросов...`);
-    await page.waitForTimeout(3000); // Увеличено до 3s для надёжности
+    await page.waitForTimeout(3000); // Увеличено для надёжности
 
     console.log(`🔌 [PLAYWRIGHT] ${new Date().toISOString()} Закрываем браузер...`);
     await browser.close();
