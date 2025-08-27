@@ -1,0 +1,24 @@
+{
+    "type": "pages",
+    "headline": "Videos",  
+    "template": {           
+        "tag": "Web",
+        "type": "separate",
+        "layout": "0,0,2,4",
+        "icon": "msx-white-soft:movie",
+        "color": "msx-glass"
+    },
+    "items": [{            
+            "title": "Video 1",
+            "playerLabel": "Video 1",
+            "action": "video:https://pet52187moc.redcdn.org/hls/mpegts/Kv7l5lK5edlT6ZlYI4Yu/843/1836763441/MCEpx7jT7EoyVzdhC6t0LA/1756380683/2025/8/KXtjxlkZEi1a5GbJeYfn_720.mp4/master-v1-a1.m3u8"
+        }, {
+            "title": "Video 2",
+            "playerLabel": "Video 2",
+            "action": "video:http://msx.benzac.de/media/video2.mp4"
+        }, {
+            "title": "Video 3",
+            "playerLabel": "Video 3",
+            "action": "video:http://msx.benzac.de/media/video3.mp4"
+        }]
+}
