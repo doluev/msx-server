@@ -3,10 +3,11 @@
   "menu": [
     {
          "label": "Videos",
-         "data": "https://msx-server-1.onrender.com/msx/videos.json"
+         "data": "https://https://msx-server-production.up.railway.app/msx/videos.json"
       }
   ]
 }
+
 
 
 
