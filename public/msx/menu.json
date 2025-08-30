@@ -1,42 +1,86 @@
-import express from "express";
-import cors from "cors";
-import path from "path";
-import { fileURLToPath } from "url";
-
-// ES Module __dirname
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-
-const app = express();
-app.use(cors());
-
-// Статика под /msx
-app.use("/msx", express.static(path.join(__dirname, "public/msx")));
-
-// Пример каталога фильмов
-const catalog = [
-  { title: "Демо видео 1", url: "https://msx.benzac.de/media/video1.mp4", type: "video" },
-  { title: "Демо видео 2", url: "https://msx.benzac.de/media/video2.mp4", type: "video" }
-];
-
-// Эндпоинт поиска
-app.get("/msx/search", (req, res) => {
-  const q = String(req.query.input || "").toLowerCase();
-  const results = q ? catalog.filter(f => f.title.toLowerCase().includes(q)) : [];
-
-  res.json({
-    type: "pages",
-    headline: `Результаты поиска: "${q}"`,
-    template: { type: "button", layout: "0,0,3,3" },
-    items: results.map(f => ({
-      icon: "movie",
-      label: f.title,
-      action: f.type === "video" ? `video:${f.url}` : `link:${f.url}`
-    }))
-  });
-});
-
-const PORT = process.env.PORT || 8080;
-app.listen(PORT, () =>
-  console.log(`MSX server running at http://localhost:${PORT}/msx/start.json`)
-);
+{
+   "type": "list",
+   "headline": "WALS_MSX 2.5",
+   "extension": "{col:msx-white}{ico:msx-white:event} {now:date:D, M d, yyyy}{tb}{ico:msx-white:access-time} {now:time:hh:mm}",
+   "dictionary": "https://wals09.github.io/msx/dictionary.json",
+   "preload": "next",
+   "captionUnderlay": 1,
+   "underlay": {
+      "items": [
+         {
+            "type": "space",
+            "round": false,
+            "layout": "0,3,12,3",
+            "offset": "-1.25,-0.6,2,1.17",
+            "color": "msx-black-soft"
+         },
+         {
+            "type": "space",
+            "round": false,
+            "layout": "0,0,12,1",
+            "offset": "-1,0,2,-0.8",
+            "color": "red"
+         },
+         {
+            "id": "text",
+            "type": "space",
+            "layout": "1,0,6,3",
+            "offset": "-1,0.5,1,0",
+            "headline": "",
+            "text": ""
+         }
+      ]
+   },
+   "template": {
+      "type": "default",
+      "layout": "0,0,1,1",
+      "area": "0,0,12,3",
+      "offset": "0,2.5,0,0",
+      "trigger:back": "player:stop",
+      "color": "msx-glass",
+      "imageFiller": "cover"
+   },
+   "items": [
+      {
+         "color": "transparent",
+         "image": "https://wals09.github.io/msx/logon/tema.png",
+         "selection": {
+            "important": true,
+            "action": "update:content:underlay:text",
+            "data": {
+               "headline": "Тема оформления",
+               "text": "Выбор темы оформления WALS_MSX"
+            }
+         },
+         "action": "panel:https://wals09.github.io/msx/tema/panel_tems.json",
+         "properties": {
+            "trigger:back": "player:stop",
+            "image:extension": "| {col:msx-white}26th Item"
+         }
+      },
+      {
+         "selection": {
+            "important": true,
+            "action": "update:content:underlay:text",
+            "data": {
+               "headline": "ATODO",
+               "text": "Приложение для просмотра различного медиаконтента: фильмов, сериалов, аниме, а так же просмотр торрентов"
+            }
+         },
+         "image": "https://wals09.github.io/msx/logon/atodo.png",
+         "action": "menu:request:interaction:menu@http://atodo.fun/fun.html"
+      },
+      {
+         "selection": {
+            "important": true,
+            "action": "update:content:underlay:text",
+            "data": {
+               "headline": "GetsTV",
+               "text": " Фильмы и Мультфильмы. Крупнейшая база на любой вкус, обновляется ежедневно, новинки появляются сразу после премьеры в кинотеатре."
+            }
+         },
+         "image": "https://wals09.github.io/msx/logon/getstv.png",
+         "action": "panel:http://lg.getstv.ru/msx/msx.json"
+      }
+   ]
+}
