@@ -1,7 +1,8 @@
 {
   "name": "Мой MSX сервер",
   "version": "1.0.0",
-  "parameter": "menu:{PREFIX}{SERVER}/msx/menu.json",
+  "parameter": "menu:https://msx-server-1.onrender.com/msx/menu.json",
   "welcome": "start"
 }
+
 
